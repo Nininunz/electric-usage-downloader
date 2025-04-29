@@ -1,4 +1,4 @@
-module usage-scraper
+module electric-usage-downloader
 
 go 1.20
 
