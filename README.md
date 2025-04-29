@@ -22,7 +22,7 @@ Download [config.example.yaml](config.example.yaml) and fill in your own values.
 - `timezone` needs to be set to the timezone used by your utility. For some reason,
   the SmartHub API decided to return unix timestamps, but in the utility's timezone
   instead of in UTC, which would be the normal choice for an API.
-- `influxdb.insecure` allows connecting to a server with certificate issues.
+- ~~influxdb.insecure allows connecting to a server with certificate issues.~~
 - The other fields should be fairly self-explanatory.
 
 ## Running
@@ -33,6 +33,13 @@ Download [config.example.yaml](config.example.yaml) and fill in your own values.
 - The `--debug` flag can be used to log responses from the API for assistance debugging issues.
 
 ## Details
+
+**CSV Header Row:**
+- `StartTime`	Beginning of the usage interval (in ISO 8601 format). 
+- `EndTime`	End of the usage interval (in ISO 8601 format). 
+- `WattHours`	Energy consumed during the interval, in watt-hours. 
+- `CostInCents`	Estimated cost for the interval, in cents (if available from the provider). 
+- `MeterName`	Identifier or label for the associated utility meter (usually blank). 
 
 > The SmartHub api currently supports 15-minute resolution of data. This could change in the future; 15-minute interval
 > usage data used to be available via CSV export, but that ability was removed in January 2024.
