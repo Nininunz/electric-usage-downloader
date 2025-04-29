@@ -33,8 +33,7 @@ Set to the timezone used by your utility.
 
 > Download [config.example.yaml](config.example.yaml) and fill in your own values. <br>- `extract_days` is how many days to look back from the current day. Max is 45.
   if specific `--start` and `--end` flags are not specified. <br>- `account` is your account number, available on your bill and on the SmartHub website.
-- `service_location` is an internal SmartHub number, and must be retrieved from your browser:<br>  - Open the Developer tools to the Network tab <br>  - Navigate to Usage Explorer (example: https://novec.smarthub.coop/ui/#/usageExplorer)<br>  - Find a call to `services/secured/utility-usage/poll` in the Network tab
-  - Open the call, and copy the `serviceLocationNumber` field from the Payload tab.
+- `service_location` is an internal SmartHub number, and must be retrieved from your browser:<br>  - Open the Developer tools to the Network tab <br>  - Navigate to Usage Explorer (example: https://novec.smarthub.coop/ui/#/usageExplorer)<br>  - Find a call to `services/secured/utility-usage/poll` in the Network tab <br>  - Open the call, and copy the `serviceLocationNumber` field from the Payload tab.
 - `timezone` needs to be set to the timezone used by your utility. For some reason,
   the SmartHub API decided to return unix timestamps, but in the utility's timezone
   instead of in UTC, which would be the normal choice for an API.
