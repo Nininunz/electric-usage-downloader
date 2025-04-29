@@ -9,11 +9,30 @@ why I reverse engineered the API instead of automating a download of the CSV as 
 
 ## Config
 
-Download [config.example.yaml](config.example.yaml) and fill in your own values.
+extract_days:
+Number of days to look back from today.
+(Maximum: 45 days if --start and --end flags are not provided.)
 
-- `extract_days` is how many days to look back from the current day. Max is 45.
-  if specific `--start` and `--end` flags are not specified.
-- `account` is your account number, available on your bill and on the SmartHub website.
+account:
+Your account number, found on your bill or the SmartHub website.
+
+service_location:
+Internal SmartHub ID. To find it:
+
+Open your browser’s Developer Tools → Network tab.
+
+Navigate to Usage Explorer (e.g., SmartHub Usage Explorer).
+
+Find a request to services/secured/utility-usage/poll.
+
+Copy the serviceLocationNumber from the Payload.
+
+timezone:
+Set to the timezone used by your utility.
+(Note: SmartHub returns timestamps in local utility time, not UTC.)
+
+> Download [config.example.yaml](config.example.yaml) and fill in your own values. <br>- `extract_days` is how many days to look back from the current day. Max is 45.
+  if specific `--start` and `--end` flags are not specified. <br>- `account` is your account number, available on your bill and on the SmartHub website.
 - `service_location` is an internal SmartHub number, and must be retrieved from your browser:
   - Open the Developer tools to the Network tab
   - Navigate to Usage Explorer (example: https://novec.smarthub.coop/ui/#/usageExplorer)
