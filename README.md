@@ -1,4 +1,5 @@
 # electric-usage-downloader
+This project is a fork of electric-usage-downloader, modified to export data in CSV format instead of sending it directly to InfluxDB. It is designed for users who prefer working with CSV files to simplify their workflow and eliminate the need for an InfluxDB instance, depending on their use case.
 
 > This project reverse engineers the [NISC SmartHub](https://www.nisc.coop/blog/beyond-the-bill-the-power-of-smarthub/)
 api, which is used by hundreds of utility co-ops throughout the United States. This allows
