@@ -22,18 +22,30 @@ jobs:
     - name: Install dependencies
       run: go mod tidy
 
-    - name: Build for Linux
+    - name: Build all targets
       run: |
-        GOOS=linux GOARCH=amd64 go build -v -o electric-usage-downloader-linux main.go
+        mkdir -p dist
 
-    - name: Build for macOS (Intel)
-      run: |
-        GOOS=darwin GOARCH=amd64 go build -v -o electric-usage-downloader-macos main.go
+        # Linux x86_64
+        GOOS=linux GOARCH=amd64 go build -v -o dist/electric-usage-downloader-linux-amd64 main.go
+
+        # Linux ARM64
+        GOOS=linux GOARCH=arm64 go build -v -o dist/electric-usage-downloader-linux-arm64 main.go
+
+        # macOS Intel
+        GOOS=darwin GOARCH=amd64 go build -v -o dist/electric-usage-downloader-macos-amd64 main.go
+
+        # macOS ARM
+        GOOS=darwin GOARCH=arm64 go build -v -o dist/electric-usage-downloader-macos-arm64 main.go
+
+        # Windows x86_64
+        GOOS=windows GOARCH=amd64 go build -v -o dist/electric-usage-downloader-windows-amd64.exe main.go
+
+        # Windows ARM64
+        GOOS=windows GOARCH=arm64 go build -v -o dist/electric-usage-downloader-windows-arm64.exe main.go
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: electric-usage-downloader-builds
-        path: |
-          electric-usage-downloader-linux
-          electric-usage-downloader-macos
+        path: dist/
