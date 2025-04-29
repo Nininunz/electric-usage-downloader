@@ -1,5 +1,9 @@
 # electric-usage-downloader
-This project is a fork of **electric-usage-downloader**, modified to export data in **CSV format** instead of sending it directly to **InfluxDB**. It is designed for users who prefer working with CSV files to simplify their workflow and eliminate the need for an InfluxDB instance, depending on their use case.
+This project is a fork of [electric-usage-downloader](https://github.com/tedpearson/electric-usage-downloader), modified to export data in **CSV format** instead of sending it directly to **InfluxDB**. It is designed for users who prefer working with CSV files to simplify their workflow and eliminate the need for an InfluxDB instance, depending on their use case.
+
+This fork was originally created to serve as the data collection backend for a successor to my [ha-smarthub](https://github.com/Nininunz/ha-smarthub) project, as it was constrained by **Home Assistant’s** limited ability to **backdate events**. My initial intent was to pair this tool with [home-assistant-import-energy-data](https://github.com/patrickvorgers/Home-Assistant-Import-Energy-Data), but after considerable experimentation, the solution proved too clunky. It would have also required periodically restarting Home Assistant as a precaution against potential data corruption.
+
+While **home-assistant-import-energy-data** is a great solution for backfilling missing history for existing entities, it is less suited for serving as the entity itself in a live setup.
 
 > This project reverse engineers the [NISC SmartHub](https://www.nisc.coop/blog/beyond-the-bill-the-power-of-smarthub/)
 api, which is used by hundreds of utility co-ops throughout the United States. This allows
