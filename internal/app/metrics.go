@@ -1,43 +1,50 @@
 package app
 
 import (
-	"context"
-	"crypto/tls"
+	"encoding/csv"
+	"fmt"
+	"os"
+	"strconv"
 	"time"
-
-	"github.com/influxdata/influxdb-client-go/v2"
-	"github.com/influxdata/influxdb-client-go/v2/api/write"
 )
 
-// WriteMetrics writes ElectricUsage data to victoriametrics.
-// This method writes a point every minute instead of following the time span of ElectricUsage.
-func WriteMetrics(records []ElectricUsage, config InfluxConfig) error {
-	opts := influxdb2.DefaultOptions()
-	if config.Insecure {
-		opts.SetTLSConfig(&tls.Config{InsecureSkipVerify: true})
+// WriteMetrics writes ElectricUsage data to a CSV file instead of InfluxDB.
+func WriteMetrics(records []ElectricUsage, _ any) error {
+	// Open the file
+	file, err := os.Create("output.csv")
+	if err != nil {
+		return fmt.Errorf("failed to create output.csv: %w", err)
 	}
-	client := influxdb2.NewClientWithOptions(config.Host, config.AuthToken, opts)
-	writeApi := client.WriteAPIBlocking(config.Org, config.Database)
+	defer file.Close()
+
+	writer := csv.NewWriter(file)
+	defer writer.Flush()
+
+	// Write CSV header
+	header := []string{"StartTime", "EndTime", "WattHours", "CostInCents", "MeterName"}
+	if err := writer.Write(header); err != nil {
+		return fmt.Errorf("failed to write header: %w", err)
+	}
+
+	// Write each record
 	for _, record := range records {
-		minutes := record.EndTime.Sub(record.StartTime).Minutes()
-		points := make([]*write.Point, 0, int(minutes))
-		multiplier := 60 / minutes
-		for t := record.StartTime; record.EndTime.After(t); t = t.Add(time.Minute) {
-			point := influxdb2.NewPointWithMeasurement("electric").
-				SetTime(t).
-				AddField("watts", float64(record.WattHours)*multiplier)
-			if record.CostInCents != nil {
-				point.AddField("cost", float64(*record.CostInCents)/minutes)
-			}
-			if record.MeterName != nil {
-				point.AddTag("name", *record.MeterName)
-			}
-			points = append(points, point)
+		row := []string{
+			record.StartTime.Format(time.RFC3339),
+			record.EndTime.Format(time.RFC3339),
+			strconv.FormatInt(record.WattHours, 10),
+			"",
+			"",
 		}
-		err := writeApi.WritePoint(context.Background(), points...)
-		if err != nil {
-			return err
+		if record.CostInCents != nil {
+			row[3] = strconv.FormatInt(*record.CostInCents, 10)
+		}
+		if record.MeterName != nil {
+			row[4] = *record.MeterName
+		}
+		if err := writer.Write(row); err != nil {
+			return fmt.Errorf("failed to write row: %w", err)
 		}
 	}
+
 	return nil
 }
