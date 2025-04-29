@@ -11,15 +11,6 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// InfluxConfig is the config for the VictoriaMetrics connection, via the influxdb client.
-type InfluxConfig struct {
-	Host      string `yaml:"host"`
-	AuthToken string `yaml:"auth_token"`
-	Org       string `yaml:"org"`
-	Database  string `yaml:"database"`
-	Insecure  bool   `yaml:"insecure"`
-}
-
 // SmartHubConfig is the config for SmartHub.
 // Account is your account number, available on your bill.
 // ServiceLocation appears to be an internal number, and must be retrieved from your browser. See README.md.
@@ -36,7 +27,6 @@ type SmartHubConfig struct {
 type Config struct {
 	ExtractDays int            `yaml:"extract_days"`
 	SmartHub    SmartHubConfig `yaml:"smarthub"`
-	InfluxDB    InfluxConfig   `yaml:"influxdb"`
 }
 
 var debug bool
@@ -120,7 +110,7 @@ func Main() error {
 		return err
 	}
 	fmt.Println("Writing data to database...")
-	err = WriteMetrics(usage, config.InfluxDB)
+	err = WriteMetrics(usage, nil)
 	if err != nil {
 		return err
 	}
