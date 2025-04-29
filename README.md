@@ -4,11 +4,11 @@
 api, which is used by hundreds of utility co-ops throughout the United States. This allows
 downloading 15-minute resolution electic usage and cost data for your personal account if you have a smart meter.
 
-> In prior versions of SmartHub, it was possible to download CSV exports of 15-minute interval usage data by
+ In prior versions of SmartHub, it was possible to download CSV exports of 15-minute interval usage data by
 specifying an "hourly" interval, but since January 2024 only hourly data has been available via CSV. That's
 why I reverse engineered the API instead of automating a download of the CSV as I had previously done.
 
-> ~~Data can be imported into InfluxDB or VictoriaMetrics.~~
+ ~~Data can be imported into InfluxDB or VictoriaMetrics.~~
 
 ## Config
 
