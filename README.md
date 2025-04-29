@@ -34,25 +34,25 @@ Download [config.example.yaml](config.example.yaml) and fill in your own values.
 
 ## Details
 
-The SmartHub api currently supports 15-minute resolution of data. This could change in the future; 15-minute interval
-usage data used to be available via CSV export, but that ability was removed in January 2024.
+> The SmartHub api currently supports 15-minute resolution of data. This could change in the future; 15-minute interval
+> usage data used to be available via CSV export, but that ability was removed in January 2024.
+> 
+> ~~Measurement: **electric**~~
+> 
+> ~~Fields:~~
+> - ~~**cost** (in US cents)~~
+> - ~~**usage** (in watts)~~
 
-Measurement: **electric**
+## ~~Dashboard~~
 
-Fields:
-- **cost** (in US cents)
-- **usage** (in watts)
+~~I have included my [Grafana dashboard panel definition](dashboard/panel.json) in the repo.~~
 
-## Dashboard
+~~Features:~~
+- ~~Electric usage graphed in watts~~
+- ~~Trailing 1d and 7d averages~~
+- ~~Cumulative usage (right x axis)~~
+- ~~Integrated with data from my Ecobee thermostat, showing when my heat pump or aux oil heat is running.~~
+  - ~~See https://github.com/tedpearson/ecobeemetrics for how I get this data~~
 
-I have included my [Grafana dashboard panel definition](dashboard/panel.json) in the repo.
-
-Features:
-- Electric usage graphed in watts
-- Trailing 1d and 7d averages
-- Cumulative usage (right x axis)
-- Integrated with data from my Ecobee thermostat, showing when my heat pump or aux oil heat is running.
-  - See https://github.com/tedpearson/ecobeemetrics for how I get this data
-
-Here's a screenshot of the dashboard panel in action:
-![Dashboard panel](dashboard/dashboard.png)
+~~Here's a screenshot of the dashboard panel in action:~~
+~~![Dashboard panel](dashboard/dashboard.png)~~
