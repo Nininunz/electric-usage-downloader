@@ -1,14 +1,54 @@
-name: release
+name: Build and Release electric-usage-downloader
 
 on:
   push:
-    tags:
-      - 'v*'
+    tags: 
+      - 'v*' 
   workflow_dispatch:
 
 jobs:
+
   build:
-    uses: tedpearson/ForecastMetrics/.github/workflows/release-template.yaml@master
-    with:
-      executable: electric-usage-downloader
-      ref: main
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.20'
+
+    - name: Install dependencies
+      run: go mod tidy
+
+    - name: Build all targets
+      run: |
+        mkdir -p dist
+
+        GOOS=linux GOARCH=amd64 go build -v -o dist/electric-usage-downloader-linux-amd64 main.go
+        GOOS=linux GOARCH=arm64 go build -v -o dist/electric-usage-downloader-linux-arm64 main.go
+        GOOS=darwin GOARCH=amd64 go build -v -o dist/electric-usage-downloader-macos-amd64 main.go
+        GOOS=darwin GOARCH=arm64 go build -v -o dist/electric-usage-downloader-macos-arm64 main.go
+        GOOS=windows GOARCH=amd64 go build -v -o dist/electric-usage-downloader-windows-amd64.exe main.go
+        GOOS=windows GOARCH=arm64 go build -v -o dist/electric-usage-downloader-windows-arm64.exe main.go
+
+    - name: Create GitHub Release
+      id: create_release
+      uses: actions/create-release@v1
+      with:
+        tag_name: ${{ github.ref_name }}
+        release_name: Release ${{ github.ref_name }}
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload release assets
+      uses: softprops/action-gh-release@v2
+      with:
+        files: dist/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
