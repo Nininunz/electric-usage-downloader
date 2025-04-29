@@ -22,11 +22,18 @@ jobs:
     - name: Install dependencies
       run: go mod tidy
 
-    - name: Build
-      run: go build -v -o electric-usage-downloader main.go
+    - name: Build for Linux
+      run: |
+        GOOS=linux GOARCH=amd64 go build -v -o electric-usage-downloader-linux main.go
 
-    - name: Upload artifact
+    - name: Build for macOS (Intel)
+      run: |
+        GOOS=darwin GOARCH=amd64 go build -v -o electric-usage-downloader-macos main.go
+
+    - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: electric-usage-downloader
-        path: electric-usage-downloader
+        name: electric-usage-downloader-builds
+        path: |
+          electric-usage-downloader-linux
+          electric-usage-downloader-macos
